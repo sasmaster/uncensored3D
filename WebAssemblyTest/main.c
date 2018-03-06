@@ -9,7 +9,9 @@
 #define GLFW_INCLUDE_ES3
 #include <GLFW/glfw3.h>
 #include "gllib.h"
-#include "linmath.h"
+
+#include "utils.h"
+#include "scene.h"
 
 //Emscripten:
 //The VS2015 plugin is available from here: https://github.com/crosire/vs-toolsets
@@ -24,6 +26,11 @@ GLFWwindow * window;
 
 int main()
 {
+	Spatial graphics_node1;
+
+	
+
+	
 
 	// TODO list:
 	// 1. Add GLFW to create gles context
@@ -72,6 +79,8 @@ int main()
 
 	glfwMakeContextCurrent(window);
 
+	glfwSwapInterval(1);
+
 	StandardShaderProgram prog;
 
 	create_shader_program(&prog, vertex_shader_text, fragment_shader_text);
@@ -103,9 +112,14 @@ int main()
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	while (!glfwWindowShouldClose(window))
 	{
+		
+		double t_start = get_time_in_milliseconds();
+
 		glViewport(0, 0, WIN_W, WIN_H);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		//for some reason the sync happens at glClear color
+		
+		
 
 		//scale
 		mat4x4_identity(modelMatrix);
@@ -136,8 +150,23 @@ int main()
 		glBindVertexArray(mesh.vao);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
+	
+
 		glfwPollEvents();
 		glfwSwapBuffers(window);
+
+		//glFinish();
+		double frame_time = get_time_in_milliseconds() - t_start;
+		printf("Frame time:%f\n", frame_time);
+		char time_str[20];
+		snprintf(time_str, 19, "Frame time: %.2f", frame_time);
+		glfwSetWindowTitle(window, time_str);
+
+		
+	
+	
+		
+
 	}
 	return 0;
 }
