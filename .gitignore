@@ -30,7 +30,8 @@
 *.exe
 *.out
 *.app
-
+*.vs
+*.suo
 WebAssemblyTest/Emscripten
 WebAssemblyTest/gles
 WebAssemblyTest/x64
