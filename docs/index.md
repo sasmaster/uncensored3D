@@ -24,7 +24,12 @@ I wanted to make sure I don't miss any emscripten specific method, and that repo
     
    
    Now, during the compilation of this prog, I encountered a couple of issues,which are worth to mention here. First, it looks like emscripten compiler performs quite aggressive optimization of the functions. I had several `inline` methods, which are being eliminated,and contrary to regular compiler,emcc just shows a warning like  "GCCLINK : warning : unresolved symbol: create_texture". So the code will compile,but once you run it in the browser it crashes. On emscripten repo discussion I learnt that putting linker flag 
-   ` LINKABLE=1 ` prevent link time optimization and dead code elimination. I think there is a better way to solve that issue than disabling linker optimization,and I wll check on this one later.
+   `-s LINKABLE=1 ` prevent link time optimization and dead code elimination. I think there is a better way to solve that issue than disabling linker optimization,and I wll check on this one later. [Update] Nope,the last line I wrote doesn't work for C inlined functions. One has to mark those as static as well. Something like this would work:
+   
+     static inline void foo()
+     {
+     
+     }
  
  Another issue was `unresolved symbol` warnings for glfw functions. I found that using GLFW3 one has to add the following linker flag:
    
