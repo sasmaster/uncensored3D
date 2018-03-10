@@ -11,6 +11,7 @@ https://github.com/HarryLovesCode/WebAssembly-WebGL-2
 I wanted to make sure I don't miss any emscripten specific method, and that repo provided a complete emscripten setup. What is important in this respect is the  function `emscripten_set_main_loop`. It won't work putting the render loop into something we freuqently do in a native app:
 
    `
+   
       while(true)
       {
       
