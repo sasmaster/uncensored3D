@@ -10,16 +10,14 @@ https://github.com/HarryLovesCode/WebAssembly-WebGL-2
 
 I wanted to make sure I don't miss any emscripten specific method, and that repo provided a complete emscripten setup. What is important in this respect is the  function `emscripten_set_main_loop`. It won't work putting the render loop into something we freuqently do in a native app:
 
-   `
+    
    
       while(true)
       {
-      
          //render stuff goes here
-      
       }
    
-   `
+    
    
    Now, during the compilation of this prog, I encountered a couple of issues,which are worth to mention here. First, it looks like emscripten compiler performs quite aggressive optimization of the functions. I had several `inline` methods, which are being eliminated,and contrary to regular compiler,emcc just shows a warning like  "GCCLINK : warning : unresolved symbol: create_texture". So the code will compile,but once you run it in the browser it crashes. On emscripten repo discussion I learnt that putting linker flag 
    ` LINKABLE=1 ` prevent link time optimization and dead code elimination. I think there is a better way to solve that issue than disabling linker optimization,and I wll check on this one later.
