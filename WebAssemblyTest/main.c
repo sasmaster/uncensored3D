@@ -112,10 +112,10 @@ int main()
 
 	create_plane_mesh(mesh);
 
-	//GLuint tex;
+	 GLuint tex;
 
-	//create_texture(&tex);
-	//printf("%i\n",tex);
+	 create_texture(&tex);
+	 printf("%i\n",tex);
 
 	mat4x4_perspective(perspMatrix, LIN_TO_RADIANS(46.0f), (float)WIN_W / (float)WIN_H, 0.5f, 2000.0f);
 
