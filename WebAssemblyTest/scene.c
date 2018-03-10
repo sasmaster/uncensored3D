@@ -16,7 +16,7 @@ void remove_child(Spatial* parent,Spatial* child)
 {
 	for (unsigned int i = 0; i < parent->num_children; i++)
 	{
-	   Spatial* c =	arrayGet(parent->children, 1);
+	   Spatial* c =	(Spatial*)arrayGet(parent->children, 1);
 	   if (child == c)
 	   {
 		   arrayRemove(parent->children, i);

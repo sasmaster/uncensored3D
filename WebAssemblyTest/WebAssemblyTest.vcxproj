@@ -217,9 +217,25 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WASM=1;__EMSCRIPTEN__</PreprocessorDefinitions>
-      <CLanguageStandard>gnu99</CLanguageStandard>
+      <PreprocessorDefinitions>__EMSCRIPTEN__</PreprocessorDefinitions>
+      <CLanguageStandard>Default</CLanguageStandard>
+      <CompileAs>CompileAsC</CompileAs>
+      <AdditionalOptions />
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalOptions>-s WASM=1 -s USE_GLFW=3 -s USE_WEBGL2=1 -s LINKABLE=1</AdditionalOptions>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>
+      </LinkLibraryDependencies>
+    </ProjectReference>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>
+      </UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugC|Emscripten'">
     <ClCompile>
@@ -323,13 +339,12 @@
     <ClCompile Include="array.c" />
     <ClCompile Include="gllib.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scene.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gllib.h" />
     <ClInclude Include="linmath.h" />
     <ClInclude Include="scene.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

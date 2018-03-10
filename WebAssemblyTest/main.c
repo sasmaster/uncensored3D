@@ -1,16 +1,18 @@
 #include <stdio.h>
 
+//#define __EMSCRIPTEN__ 1
 
+#if __EMSCRIPTEN__
 
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
 #endif // _EMSCRIPTEN_
+
+#include <emscripten.h>
 
 #define GLFW_INCLUDE_ES3
 #include <GLFW/glfw3.h>
 #include "gllib.h"
 
-#include "utils.h"
+//#include "utils.h"
 #include "scene.h"
 
 //Emscripten:
@@ -24,13 +26,26 @@ GLFWwindow * window;
 #define WIN_W 1280
 #define WIN_H 720
 
+
+void render();
+mat4x4 modelMatrix;
+mat4x4 perspMatrix;
+mat4x4 mvp;
+mat4x4 translationMatrix;
+mat4x4 scaleMatrix;
+mat4x4 rotMatrix;
+vec4 color = { 0.0f,1.0f,0.0f,1.0f };
+float angle = 0.0f;
+Mesh *mesh;
+StandardShaderProgram *prog;
 int main()
 {
 	Spatial graphics_node1;
 
-	
 
-	
+
+	mesh = malloc(sizeof(Mesh));
+	prog = malloc(sizeof(StandardShaderProgram));
 
 	// TODO list:
 	// 1. Add GLFW to create gles context
@@ -56,10 +71,15 @@ int main()
 		"    o_color = uColor;\n"
 		"}\n";
 
+
+#ifndef __EMSCRIPTEN__
 	glfwSetErrorCallback(output_error);
+#endif // __EMSCRIPTEN__
+
 	if (!glfwInit())
 	{
 		fputs("Faileid to initialize GLFW", stderr);
+		printf("failed to init glfw\n");
 		//emscripten_force_exit(EXIT_FAILURE);
 	}
 
@@ -71,27 +91,35 @@ int main()
 
 	window = glfwCreateWindow(WIN_W, WIN_H, "CEngine", NULL, NULL);
 
-	if (!window) {
+	if (!window)
+	{
 		fputs("Failed to create GLFW window", stderr);
+#ifdef __EMSCRIPTEN__
+		emscripten_force_exit(EXIT_FAILURE);
+#else
 		glfwTerminate();
-		//	emscripten_force_exit(EXIT_FAILURE);
+#endif // __EMSCRIPTEN__
+
 	}
 
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(1);
 
-	StandardShaderProgram prog;
 
-	create_shader_program(&prog, vertex_shader_text, fragment_shader_text);
-	Mesh mesh;
-	create_plane_mesh(&mesh);
 
-	mat4x4 perspMatrix;
+	create_shader_program(prog, vertex_shader_text, fragment_shader_text);
+
+	create_plane_mesh(mesh);
+
+	//GLuint tex;
+
+	//create_texture(&tex);
+	//printf("%i\n",tex);
 
 	mat4x4_perspective(perspMatrix, LIN_TO_RADIANS(46.0f), (float)WIN_W / (float)WIN_H, 0.5f, 2000.0f);
 
-	mat4x4 modelMatrix;
+
 	mat4x4_identity(modelMatrix);
 	vec3 scale = { 100.0f,100.0f,1.0f };
 
@@ -99,74 +127,93 @@ int main()
 	mat4x4_scale_by_vec(modelMatrix, scale);
 
 
-	mat4x4 mvp;
+
 	mat4x4_mul(mvp, perspMatrix, modelMatrix);
 
-	mat4x4 translationMatrix;
-	mat4x4 scaleMatrix;
 	mat4x4_identity(scaleMatrix);
-	mat4x4 rotMatrix;
-	vec4 color = { 0.0f,1.0f,0.0f,1.0f };
-	float angle = 0.0f;
+
+
 	printf("Hello, world!\n");
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+
+
+#ifdef __EMSCRIPTEN__
+
+	emscripten_set_main_loop(render, 0, 0);
+
+#else
+
 	while (!glfwWindowShouldClose(window))
 	{
-		
-		double t_start = get_time_in_milliseconds();
-
-		glViewport(0, 0, WIN_W, WIN_H);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//for some reason the sync happens at glClear color
-		
-		
-
-		//scale
-		mat4x4_identity(modelMatrix);
-		mat4x4_scale(scaleMatrix, modelMatrix, 100.0f);
-
-		//rotation
-		mat4x4_identity(rotMatrix);
-		mat4x4_rotate(rotMatrix, modelMatrix, 0, 1.0f, 0.0f, LIN_TO_RADIANS(angle));
-		angle += 2.44f;
-
-
-		//translation
-		mat4x4_identity(translationMatrix);
-		mat4x4_translate(translationMatrix, 100.0f, 50.0f, -500.0f);
-
-		//T * R * S
-		mat4x4_mul(modelMatrix, translationMatrix, rotMatrix);
-		mat4x4_mul(modelMatrix, modelMatrix, scaleMatrix);
-
-
-		//
-		//mat4x4_scale_by_vec(modelMatrix, scale);
-		mat4x4_mul(mvp, perspMatrix, modelMatrix);
-		glUseProgram(prog.prog);
-		glUniformMatrix4fv(prog.MVP_LOC, 1, GL_FALSE, (const GLfloat*)mvp);
-		glUniform4fv(prog.COLOR_LOC, 1, (const GLfloat*)color);
-
-		glBindVertexArray(mesh.vao);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-	
-
-		glfwPollEvents();
-		glfwSwapBuffers(window);
-
-		//glFinish();
-		double frame_time = get_time_in_milliseconds() - t_start;
-		printf("Frame time:%f\n", frame_time);
-		char time_str[20];
-		snprintf(time_str, 19, "Frame time: %.2f", frame_time);
-		glfwSetWindowTitle(window, time_str);
-
-		
-	
-	
-		
-
+		render();
 	}
+
+#endif // __EMSCRIPTEN__
+
+
+
+
+
 	return 0;
+}
+
+void render()
+{
+#ifndef __EMSCRIPTEN__
+	double t_start = get_time_in_milliseconds();
+#endif // !__EMSCRIPTEN__
+
+	
+
+	glViewport(0, 0, WIN_W, WIN_H);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//for some reason the sync happens at glClear color
+
+
+
+	//scale
+	mat4x4_identity(modelMatrix);
+	mat4x4_scale(scaleMatrix, modelMatrix, 100.0f);
+
+	//rotation
+	mat4x4_identity(rotMatrix);
+	mat4x4_rotate(rotMatrix, modelMatrix, 0, 1.0f, 0.0f, LIN_TO_RADIANS(angle));
+	angle += 2.44f;
+
+
+	//translation
+	mat4x4_identity(translationMatrix);
+	mat4x4_translate(translationMatrix, 0.0f, 0.0f, -500.0f);
+
+	//T * R * S
+	mat4x4_mul(modelMatrix, translationMatrix, rotMatrix);
+	mat4x4_mul(modelMatrix, modelMatrix, scaleMatrix);
+
+
+	//
+	//mat4x4_scale_by_vec(modelMatrix, scale);
+	mat4x4_mul(mvp, perspMatrix, modelMatrix);
+	glUseProgram(prog->prog);
+	glUniformMatrix4fv(prog->MVP_LOC, 1, GL_FALSE, (const GLfloat*)mvp);
+	glUniform4fv(prog->COLOR_LOC, 1, (const GLfloat*)color);
+
+	glBindVertexArray(mesh->vao);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+
+
+	glfwPollEvents();
+	glfwSwapBuffers(window);
+
+	//glFinish();
+	
+#ifndef __EMSCRIPTEN__
+	double frame_time = get_time_in_milliseconds() - t_start;
+	printf("Frame time:%f\n", frame_time);
+	char time_str[20];
+	snprintf(time_str, 19, "Frame time: %.2f", frame_time);
+	glfwSetWindowTitle(window, time_str);
+#endif // !__EMSCRIPTEN__
+
+
 }

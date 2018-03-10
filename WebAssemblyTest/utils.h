@@ -57,6 +57,8 @@ static inline uint64_t ns() {
 	LARGE_INTEGER now;
 	QueryPerformanceCounter(&now);
 	return (uint64_t)((1e9 * now.QuadPart) / win_frequency.QuadPart);
+#else
+	return 0;
 #endif
 }
 
