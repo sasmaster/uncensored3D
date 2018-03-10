@@ -1,3 +1,3 @@
-## First Post ##
+## WebAssembly Hello world ##
 
-![Image of Yaktocat](https://sasmaster.github.io/uncensored3D/helloworld.png)
+![Spinning rectangle](https://sasmaster.github.io/uncensored3D/helloworld.png)
