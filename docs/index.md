@@ -1,3 +1,7 @@
+# uncensored3D
+
+
+
 ## WebAssembly Hello world ##
 
 I started playing with WebAssembly (back then just Emscripten) several years ago,when the project was quite unmature. Tried to compile a couple of GLES2 sources,got the windows similar to the one below,and forgot about it. But now, I decided to get back to this topic, first because Web finally brought WebGL 2.0, which is much less restricted than its predecessor, hence finally it is less pain for someone who is used to feature rich GL4.0 experimenting with it. Second, the world, as always, goes in a directions, which you're not always happy about, but then there is also nothing you can do about that. And I mean JavaScript. I never liked it, I still don't, but the reality is - web dev is heavily based on it, so I have to master it, despite what I think about the language. And I will probably be writing some JavaScript interface for this app,and hopefully, it will help me to close some gaps in my knowledge base of modern JavaScript. Finally, I have never wrote a complete rendering engine using C only. As a C++ programmer I know that would be a challenge. And I like challenges.
