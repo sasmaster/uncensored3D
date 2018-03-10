@@ -8,6 +8,10 @@ Easy embeddable cross-platform high resolution timer function. For each
 platform we select the high resolution timer. You can call the 'ns()'
 function in your file after embedding this.
 */
+#ifdef __EMSCRIPTEN__
+#define __linux
+#endif // __EMSCRIPTEN__
+
 #include <stdint.h>
 #if defined(__linux)
 #  define HAVE_POSIX_TIMER
@@ -62,17 +66,17 @@ static inline uint64_t ns() {
 #endif
 }
 
-inline double get_time_in_seconds()
+static inline double get_time_in_seconds()
 {
 	return ns() / 1000000000.0f;
 }
 
-inline double get_time_in_milliseconds()
+static inline double get_time_in_milliseconds()
 {
 	return ns() / 1000000.0;
 }
 
-inline double get_time_in_microseconds()
+static inline double get_time_in_microseconds()
 {
 	return ns() / 1000.0;
 }

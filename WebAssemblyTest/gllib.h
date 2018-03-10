@@ -33,19 +33,45 @@ typedef struct _Mesh
 	int num_indices;
 }Mesh;
 
+typedef struct _Texture
+{
+	GLuint handle;
+	int w;
+	int h;
+	int num_channels;
+}Texture;
+
 typedef struct _StandardShaderProgram
 {
-	GLuint prog;
+	GLuint handle;
 	GLint  MVP_LOC;
 	GLint  COLOR_LOC;
 	GLint  COLOR_TEX_LOC;
-
-
 }StandardShaderProgram;
 
-inline void create_texture(GLuint *tex)
+static inline int create_texture(Texture *tex,unsigned char* data)
 {
-	*tex = 1;
+	glGenTextures(1, &tex->handle);
+	if (tex->handle == 0)
+	{
+		printf("failed to gen texture\n");
+		return 1;
+	}
+	glActiveTexture(GL_TEXTURE0);
+	
+	const int num_mips  = (int) floorf(log2f(fmaxf((float)tex->w,(float)tex->h))) + 1;
+	glBindTexture(GL_TEXTURE_2D, tex->handle);
+	glTexStorage2D(GL_TEXTURE_2D, num_mips, GL_RGBA8, tex->w, tex->h);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, tex->w, tex->h, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return 0;
+
 }
 
 GLuint compile_shader_program(const char* vert_str, const char* frag_str);

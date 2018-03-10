@@ -1,15 +1,6 @@
 #include  "gllib.h"
 
 
-
-
-
-
-
-
-
-
-
 GLuint compile_shader_program(const char* vert_str, const char* frag_str)
 {
 
@@ -109,10 +100,10 @@ void create_vbo(GLuint *vbo, GLuint *ibo, const void* vertices, const size_t ver
 void create_shader_program(StandardShaderProgram* prog, const char* vertStr, const char* fragStr)
 {
 
-	prog->prog = compile_shader_program(vertStr, fragStr);
-	prog->COLOR_LOC = glGetUniformLocation(prog->prog, "uColor");
-	prog->COLOR_TEX_LOC = glGetUniformLocation(prog->prog, "uColorTex");
-	prog->MVP_LOC = glGetUniformLocation(prog->prog, "uMVP");
+	prog->handle = compile_shader_program(vertStr, fragStr);
+	prog->COLOR_LOC = glGetUniformLocation(prog->handle, "uColor");
+	prog->COLOR_TEX_LOC = glGetUniformLocation(prog->handle, "uColorTex");
+	prog->MVP_LOC = glGetUniformLocation(prog->handle, "uMVP");
 
 }
 
@@ -120,11 +111,16 @@ void create_shader_program(StandardShaderProgram* prog, const char* vertStr, con
 {
 
 	const float vertices[8] = {
-		-1.0f, -1.0f,
-		1.0f,  -1.0f,
+		-1.0f,  1.0f, // 0,1
 		1.0f,   1.0f,
-		-1.0f,  1.0f
+		1.0f,  -1.0f,
+		-1.0f, -1.0f
 	};
+
+  //  	-1.0f, -1.0f,  0,0
+		//1.0f, -1.0f, 1,0
+		//1.0f, 1.0f,  1,1
+		//-1.0f, 1.0f  0,1
 
 	create_vbo(&mesh->vbo, NULL, vertices, sizeof(float) * 2, 4, NULL, 0, 0);
 

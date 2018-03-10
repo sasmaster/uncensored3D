@@ -220,13 +220,17 @@
       <PreprocessorDefinitions>__EMSCRIPTEN__</PreprocessorDefinitions>
       <CLanguageStandard>Default</CLanguageStandard>
       <CompileAs>CompileAsC</CompileAs>
-      <AdditionalOptions />
+      <AdditionalOptions>
+      </AdditionalOptions>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <EchoCommandLines>true</EchoCommandLines>
     </ClCompile>
     <Link>
-      <AdditionalOptions>-s WASM=1 -s USE_GLFW=3 -s USE_WEBGL2=1 -s LINKABLE=1</AdditionalOptions>
+      <AdditionalOptions>-s WASM=1 -s USE_GLFW=3 -s USE_WEBGL2=1 </AdditionalOptions>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <EmbedFile>assets</EmbedFile>
+      <PreloadFile>assets</PreloadFile>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>
@@ -345,6 +349,7 @@
     <ClInclude Include="gllib.h" />
     <ClInclude Include="linmath.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
