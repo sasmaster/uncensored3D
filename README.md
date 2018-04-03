@@ -24,6 +24,9 @@ https://github.com/datenwolf/linmath.h
 Stb image.Header only collection of libs:
 https://github.com/nothings/stb
 
+### GUI library
+Planning to add NUKLEAR,which is pure ANSI C:
+https://github.com/vurtun/nuklear
 
 The application uses Visual Studio 2015 community edition.
 
