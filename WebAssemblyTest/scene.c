@@ -37,7 +37,7 @@ void remove_all_children(Spatial* root)
 	{
 		Spatial* currNode = stackPop(stack);
 
-		for (int i = 0; i < currNode->num_children; i++)
+		for (unsigned int i = 0; i < currNode->num_children; i++)
 		{
 			stackPush(stack, arrayRemove(currNode->children, i));
 		}
