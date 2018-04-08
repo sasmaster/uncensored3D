@@ -16,7 +16,7 @@
 #include "scene.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
+#include "glsl.h"
 //Emscripten:
 //The VS2015 plugin is available from here: https://github.com/crosire/vs-toolsets
 static void output_error(int error, const char * msg)
@@ -56,28 +56,7 @@ int main()
 	// 4. test it .DONE
 	// 5. test it in emscripten .DONE
 
-	const char* vertex_shader_text =
-		"#version 300 es\n"
-		"uniform highp mat4 uMVP;\n"
-		"layout(location = 0)in lowp vec2 vPos;\n"
-		"const  lowp vec2 uvoff = vec2(0.5,0.5);\n"
-		"out lowp vec2 uvsOut;\n"
-		"void main()\n"
-		"{\n"
-		" gl_Position = uMVP * vec4(vPos, 0.0, 1.0);\n"
-		" uvsOut = vPos * uvoff + uvoff;\n"
-		"}\n";
-	const char* fragment_shader_text =
-		"#version 300 es\n"
-		"uniform lowp vec4 uColor;\n"
-		"uniform lowp sampler2D uColorTex;\n"
-		"in lowp vec2 uvsOut;\n"
-		"out lowp vec4 o_color;\n"
-		"void main()\n"
-		"{\n"
-		"    lowp vec4 tex_color = texture(uColorTex,vec2(uvsOut.s,1.0 - uvsOut.t));\n"
-		"    o_color = vec4(tex_color.rgb,tex_color.a) * uColor;\n"
-		"}\n";
+	
 
 
 #ifndef __EMSCRIPTEN__
@@ -143,16 +122,18 @@ int main()
 
 	mat4x4_identity(scaleMatrix);
 
+	//-------------------   set basic state ------------------//
 	//turn on alpha blending:
 	glEnable(GL_BLEND);
+	glEnable(GL_STENCIL_TEST);//we want this for path rendering
 	glBlendEquation(GL_FUNC_ADD);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	printf("Hello, world!\n");
+
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
 
 #ifdef __EMSCRIPTEN__
-
+	printf("Hello, world!\n");
 	emscripten_set_main_loop(render, 0, 0);
 
 #else
@@ -173,9 +154,7 @@ int main()
 
 void render()
 {
-#ifndef __EMSCRIPTEN__
-	
-#endif // !__EMSCRIPTEN__
+
 
 	double t_start = get_time_in_milliseconds();
 
@@ -223,8 +202,6 @@ void render()
 	glfwPollEvents();
 	glfwSwapBuffers(window);
 
-	//glFinish();
-	
 
 
 	double frame_time = get_time_in_milliseconds() - t_start;

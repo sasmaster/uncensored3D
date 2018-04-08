@@ -95,15 +95,13 @@ void create_vbo(GLuint *vbo, GLuint *ibo, const void* vertices, const size_t ver
 
 
 
-
-
 void create_shader_program(StandardShaderProgram* prog, const char* vertStr, const char* fragStr)
 {
 
-	prog->handle = compile_shader_program(vertStr, fragStr);
-	prog->COLOR_LOC = glGetUniformLocation(prog->handle, "uColor");
+	prog->handle        = compile_shader_program(vertStr, fragStr);
+	prog->COLOR_LOC     = glGetUniformLocation(prog->handle, "uColor");
 	prog->COLOR_TEX_LOC = glGetUniformLocation(prog->handle, "uColorTex");
-	prog->MVP_LOC = glGetUniformLocation(prog->handle, "uMVP");
+	prog->MVP_LOC       = glGetUniformLocation(prog->handle, "uMVP");
 
 }
 

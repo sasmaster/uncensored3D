@@ -1,7 +1,11 @@
 #ifndef LINMATH_H
 #define LINMATH_H
 
+#define _USE_MATH_DEFINES
 #include <math.h>
+
+//#define M_PI            3.14159265358979323846  /* pi */
+//#define M_PI_2          1.57079632679489661923  /* half PI */
 
 #define LIN_TO_RADIANS(n)(float)(n * 0.01745329251994329576923690768489)
 

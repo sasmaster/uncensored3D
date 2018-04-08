@@ -1,15 +1,19 @@
-#ifndef  GL_LIB_H
-#define  GL_LIB_H
+#ifndef  G_LIB_H
+#define  G_LIB_H
+
+
+#include <GLES3/gl3.h>
+
+
+#include "linmath.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <GLES3/gl3.h>
-#include <math.h>
 #include <assert.h>
 
 
-#define M_PI            3.14159265358979323846  /* pi */
-#define M_PI_2          1.57079632679489661923  /* half PI */
+//we forward declare array
+typedef struct  Array Array;
 
 typedef enum
 {
@@ -33,6 +37,12 @@ typedef struct _Mesh
 	int num_indices;
 }Mesh;
 
+typedef struct _Shape
+{
+	Mesh   mesh;
+	Array*  path;
+}Shape;
+
 typedef struct _Texture
 {
 	GLuint handle;
@@ -48,6 +58,13 @@ typedef struct _StandardShaderProgram
 	GLint  COLOR_LOC;
 	GLint  COLOR_TEX_LOC;
 }StandardShaderProgram;
+
+typedef struct _RenderState
+{
+	vec4 clear_color;
+	GLuint clearFlags;
+	GLint view_port[2];
+}RenderState;
 
 static inline int create_texture(Texture *tex,unsigned char* data)
 {
@@ -131,13 +148,12 @@ inline void create_sphere_mesh(float radius, unsigned int rings, unsigned int se
 	unsigned short* i = indices;
 	for (r = 0; r < rings; r++)
 	{
-		for (s = 0; s < sectors; s++) {
+		for (s = 0; s < sectors; s++)
+		{
 			*i++ = r * sectors + s;
 			*i++ = r * sectors + (s + 1);
 			*i++ = (r + 1) * sectors + (s + 1);
 			*i++ = (r + 1) * sectors + s;
-
-
 		}
 	}
 
@@ -148,6 +164,38 @@ inline void create_sphere_mesh(float radius, unsigned int rings, unsigned int se
 
 inline void create_fbo()
 {
+
+}
+
+inline void render_path(RenderState* render_state,Shape* shape)
+{
+	glViewport(0, 0, render_state->view_port[0], render_state->view_port[1]);
+
+	glClearColor(render_state->clear_color[0], render_state->clear_color[1],
+		render_state->clear_color[2], render_state->clear_color[3]);
+
+	glClear(render_state->clearFlags);
+
+	
+
+	// Stencil pass:
+	//   Always pass
+	//   increment for front facing (CCW) triangles
+	//   decrement for back facing (CW) triangles
+	//   Stencil buffer write only pass
+
+	glStencilMask(0xFF);//255 - stencil write is on
+	glDepthMask(GL_FALSE);
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glStencilFunc(GL_ALWAYS, 0, 255);
+
+	glStencilOpSeparate(GL_FRONT,GL_INCR_WRAP, GL_INCR_WRAP, GL_INCR_WRAP);
+	glStencilOpSeparate(GL_BACK,GL_DECR_WRAP, GL_DECR_WRAP, GL_DECR_WRAP);
+
+	//draw stencil curves here
+
+	//andnon
+
 
 }
 
