@@ -59,5 +59,8 @@
     <ClInclude Include="path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,10 +1,12 @@
 # uncensored3D
 
-This is the place of my experiments with EMSCRIPTEN, OpenGL ES3.0, WebGL2.0.
+This is the place of my experiments with EMSCRIPTEN, OpenGL ES3.0, WebGL2.0 ,
+GPU Path rendering, and other stuff, which I find appropriate for public eyes.
 
 Also, I am going to write it all in C.
 
-Anyone is free to copy - paste.
+Anyone is free to copy - paste and use for whatever needs. Beware, this code is in very
+raw state, hence it is far from being suitable for any commercial use at the moment.
 
 Application dependencies:
 
@@ -24,9 +26,6 @@ https://github.com/datenwolf/linmath.h
 Stb image.Header only collection of libs:
 https://github.com/nothings/stb
 
-### GUI library
-Planning to add NUKLEAR,which is pure ANSI C:
-https://github.com/vurtun/nuklear
 
 The application uses Visual Studio 2015 community edition.
 

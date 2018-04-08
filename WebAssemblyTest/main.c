@@ -17,6 +17,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "glsl.h"
+
+#include "path.h"
 //Emscripten:
 //The VS2015 plugin is available from here: https://github.com/crosire/vs-toolsets
 static void output_error(int error, const char * msg)
@@ -45,18 +47,16 @@ int main()
 {
 	Spatial graphics_node1;
 
+	 
 
 	unsigned char* img_data = stbi_load("assets/test.png", &tex1.w, &tex1.h,&tex1.num_channels, 4);
 
 
-	// TODO list:
-	// 1. Add GLFW to create gles context .DONE
-	// 2. Compile shader program  .DONE
-	// 3. create mesh  .DONE
-	// 4. test it .DONE
-	// 5. test it in emscripten .DONE
+	Path path1;
 
-	
+	initPath(&path1);
+
+ 
 
 
 #ifndef __EMSCRIPTEN__
