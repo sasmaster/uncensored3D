@@ -9,8 +9,8 @@ I started playing with WebAssembly (back then just Emscripten) several years ago
 ![Spinning rectangle](https://sasmaster.github.io/uncensored3D/helloworld.png)
 
 
-In this first example I wrote a simple program,which renders just a quad. In fact much of its basis I just copy pasted from this 'getting started' tutorial.
-https://github.com/HarryLovesCode/WebAssembly-WebGL-2
+In this first example I wrote a simple program,which renders just a quad. In fact much of its basis I just copy pasted from this 'getting started' [tutorial](https://github.com/HarryLovesCode/WebAssembly-WebGL-2).
+
 
 I wanted to make sure I don't miss any emscripten specific method, and that repo provided a complete emscripten setup. What is important in this respect is the  function `emscripten_set_main_loop`. It won't work putting the render loop into something we freuqently do in a native app:
 
@@ -48,5 +48,5 @@ I wanted to make sure I don't miss any emscripten specific method, and that repo
    
 ## Emscripten with VS 2017 ##  
 
-To get it working with ![vs-toolsets] (https://github.com/crosire/vs-toolsets) I upgraded Emscripten SDK to the latest version. Funny thing is also that Visual Studio 2017 installs BuildCustomizations and Platforms folders not in **C:/MSBuild..** but into   **C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets**   .That's how it looks like at least on my PC after removing VS2015 and installing VS2017 instead. Another important change I had to make was to set explicitly clang compiler to use **C11 with GNU extensions (-std=gnu11)** under C++ Language standard option. The project uses C and the compiler is set to compile as C code.But for some reason,without telling Clang to use -std=gnu11 it uses -std=c++03 which triggers tons of compile errors in my C code.
+To get it working with [vs-toolsets](https://github.com/crosire/vs-toolsets) I upgraded Emscripten SDK to the latest version. Funny thing is also that Visual Studio 2017 installs BuildCustomizations and Platforms folders not in **C:/MSBuild..** but into   **C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets**   .That's how it looks like at least on my PC after removing VS2015 and installing VS2017 instead. Another important change I had to make was to set explicitly clang compiler to use **C11 with GNU extensions (-std=gnu11)** under C++ Language standard option. The project uses C and the compiler is set to compile as C code.But for some reason,without telling Clang to use -std=gnu11 it uses -std=c++03 which triggers tons of compile errors in my C code.
    
