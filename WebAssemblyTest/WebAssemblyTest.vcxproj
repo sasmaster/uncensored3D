@@ -53,7 +53,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5F5DD3D6-BB41-4DA0-8F5F-78BF747DE4D2}</ProjectGuid>
     <RootNamespace>WebAssemblyTest</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -91,7 +91,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugC|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Emscripten'" Label="Configuration">
@@ -217,7 +217,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__EMSCRIPTEN__</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__EMSCRIPTEN__;STBI_NO_SIMD</PreprocessorDefinitions>
       <CLanguageStandard>Default</CLanguageStandard>
       <CompileAs>CompileAsC</CompileAs>
       <AdditionalOptions>
@@ -225,6 +225,7 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <EchoCommandLines>true</EchoCommandLines>
+      <LanguageStandard>gnuc11</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalOptions>-s WASM=1 -s USE_GLFW=3 -s USE_WEBGL2=1 </AdditionalOptions>
