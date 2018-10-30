@@ -9,8 +9,8 @@ I started playing with WebAssembly (back then just Emscripten) several years ago
 ![Spinning rectangle](https://sasmaster.github.io/uncensored3D/helloworld.png)
 
 
-In this first example I wrote a simple program,which renders just a quad. In fact much of its basis I just copy pasted from this 'getting started' tutorial.
-https://github.com/HarryLovesCode/WebAssembly-WebGL-2
+In this first example I wrote a simple program,which renders just a quad. In fact much of its basis I just copy pasted from this 'getting started' [tutorial](https://github.com/HarryLovesCode/WebAssembly-WebGL-2).
+
 
 I wanted to make sure I don't miss any emscripten specific method, and that repo provided a complete emscripten setup. What is important in this respect is the  function `emscripten_set_main_loop`. It won't work putting the render loop into something we freuqently do in a native app:
 
@@ -44,4 +44,9 @@ I wanted to make sure I don't miss any emscripten specific method, and that repo
    ` -s WASM=1 -s `  
    
    Now,the app is up and running. I need to check if the timer wrapper which uses windows.h under the hood would get compiled ok, as I want to measure frame time. Then I will proceed to structuring my rendering API. C requires a quite different thinking than C++,where we often just wrap everything into some class and forget about that.First noticable limitation I encounter is lack of ready stuff like STL containers, some proper libs like glm math,which I currently replace with some simple header-only math lib.Math is not a problem,but now I am planning also to add support for GLTF files,to render external 3D models,and all those loaders are in C.That will probably force me to write my own GLTF in C. I have never written any C app on a serious scale, so it takes from me some effort at the moment to put some thought into design of the APi, much more than into actual implementation.
+   
+   
+## Emscripten with VS 2017 ##  
+
+To get it working with [vs-toolsets](https://github.com/crosire/vs-toolsets) I upgraded Emscripten SDK to the latest version. Funny thing is also that Visual Studio 2017 installs BuildCustomizations and Platforms folders not in **C:/MSBuild..** but into   **C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets**   .That's how it looks like at least on my PC after removing VS2015 and installing VS2017 instead. Another important change I had to make was to set explicitly clang compiler to use **C11 with GNU extensions (-std=gnu11)** under C++ Language standard option. The project uses C and the compiler is set to compile as C code.But for some reason,without telling Clang to use -std=gnu11 it uses -std=c++03 which triggers tons of compile errors in my C code.
    
