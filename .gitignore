@@ -36,8 +36,4 @@
 *.vs
 *.suo
 *.sln
-WebAssemblyTest/Emscripten
-WebAssemblyTest/gles
-WebAssemblyTest/x64
-WebAssemblyTest/glfw-3.2
-WebAssemblyTest/DebugC
+EngineApp

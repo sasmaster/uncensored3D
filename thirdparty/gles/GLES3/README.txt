@@ -1,0 +1,1 @@
+The libs for GLES are emulators for desktop from Imagination Technologies
