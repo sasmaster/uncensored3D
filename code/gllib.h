@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 
 
@@ -66,29 +67,41 @@ typedef struct _RenderState
 	GLint view_port[2];
 }RenderState;
 
-inline int create_texture(Texture *tex,unsigned char* data)
+inline int create_texture(Texture *tex,bool mipmaps,unsigned char* data)
 {
 	glGenTextures(1, &tex->handle);
+
 	if (tex->handle == 0)
 	{
 		printf("failed to gen texture\n");
 		return 1;
 	}
+	 
 	glActiveTexture(GL_TEXTURE0);
+	const int num_mips = mipmaps?(int)floorf(log2f(fmaxf((float)tex->w, (float)tex->h))) + 1:1;
 	
-	const int num_mips  = (int) floorf(log2f(fmaxf((float)tex->w,(float)tex->h))) + 1;
 	glBindTexture(GL_TEXTURE_2D, tex->handle);
 	glTexStorage2D(GL_TEXTURE_2D, num_mips, GL_RGBA8, tex->w, tex->h);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, tex->w, tex->h, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	if (data)
+	{
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, tex->w, tex->h, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmaps? GL_LINEAR_MIPMAP_LINEAR: GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,	  GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,	  GL_CLAMP_TO_EDGE);
+
+	if (mipmaps)
+	{
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return 0;
-
 }
 
 void create_sphere_mesh(float radius, unsigned int rings, unsigned int sectors);

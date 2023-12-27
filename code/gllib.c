@@ -1,7 +1,7 @@
 #include  "gllib.h"
 
 //proper way of inlining in C: https://stackoverflow.com/questions/23699719/inline-vs-static-inline-in-header-file
-extern inline int create_texture(Texture* tex, unsigned char* data);
+extern inline int create_texture(Texture* tex, bool mipmaps, unsigned char* data);
 extern inline void render_path(RenderState* render_state, Shape* shape);
 
 GLuint compile_shader_program(const char* vert_str, const char* frag_str)
