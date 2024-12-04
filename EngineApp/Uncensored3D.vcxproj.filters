@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{b7fd28cd-a7ec-43e9-ba19-1e4ce156f851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c9ef5a43-0baa-4412-bbdb-e3b3ea1e4a04}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\code\array.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\gllib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\glsl.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\scene.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\path.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\path.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -36,4 +36,6 @@
 *.vs
 *.suo
 *.sln
-EngineApp
+EngineApp/Emscripten
+EngineApp/Web/assets
+EngineApp/x64

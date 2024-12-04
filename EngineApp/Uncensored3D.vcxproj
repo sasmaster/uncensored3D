@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugEmscr|Emscripten">
+      <Configuration>DebugEmscr</Configuration>
+      <Platform>Emscripten</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugEmscr|x64">
+      <Configuration>DebugEmscr</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Emscripten">
+      <Configuration>Debug</Configuration>
+      <Platform>Emscripten</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Emscripten">
+      <Configuration>Release</Configuration>
+      <Platform>Emscripten</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\code\array.c" />
+    <ClCompile Include="..\code\gllib.c" />
+    <ClCompile Include="..\code\glsl.c" />
+    <ClCompile Include="..\code\main.c" />
+    <ClCompile Include="..\code\path.c" />
+    <ClCompile Include="..\code\scene.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\path.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|Emscripten'">
+    <ClCompile>
+      <LanguageStandard>gnuc11</LanguageStandard>
+      <ExceptionHandling>false</ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <AdditionalIncludeDirectories>C:\Users\explo\Documents\uncensored3D\thirdparty\glfw-3.3.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-sINITIAL_MEMORY=134217728 -sMAX_WEBGL_VERSION=2   -sUSE_GLFW=3  -sFULL_ES3 -sEXIT_RUNTIME  -sASYNCIFY  -lembind  -sENVIRONMENT=web,worker  -sUSE_PTHREADS=1 -sPTHREAD_POOL_SIZE=4  -sOFFSCREENCANVAS_SUPPORT=1 -sOFFSCREEN_FRAMEBUFFER    -lpthread   %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Emscripten'">
+    <ClCompile>
+      <LanguageStandard>gnuc11</LanguageStandard>
+      <ExceptionHandling>false</ExceptionHandling>
+      <CompileAs>CompileAsC</CompileAs>
+      <GenerateDebugInformation>FullDebug</GenerateDebugInformation>
+      <Warnings>AllWarnings</Warnings>
+      <OptimizationLevel>
+      </OptimizationLevel>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_HAS_EXCEPTIONS=0</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\explo\Documents\uncensored3D\code;C:\Users\explo\Documents\uncensored3D\thirdparty\gles;C:\Users\explo\Documents\uncensored3D\thirdparty\glfw-3.3.9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>-sINITIAL_MEMORY=134217728 -sMAX_WEBGL_VERSION=2   -sUSE_GLFW=3  -sFULL_ES3 -sEXIT_RUNTIME  -sASYNCIFY  -lembind   -sEXPORTED_RUNTIME_METHODS=["UTF8ToString","stringToNewUTF8"]  -sEXPORTED_FUNCTIONS=["_main","_malloc","_free","_malloc"] %(AdditionalOptions)</AdditionalOptions>
+      <EmbedFile>
+      </EmbedFile>
+      <LinkerOptimizationLevel>
+      </LinkerOptimizationLevel>
+      <PreloadFile>assets;%(PreloadFile)</PreloadFile>
+      <GenerateDebugInformation>MoreDebugInformation</GenerateDebugInformation>
+      <EnableMemoryGrowth>true</EnableMemoryGrowth>
+      <EmBind>true</EmBind>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)$(Platform)\$(Configuration)\Uncensored3D.wasm"  "$(SolutionDir)Web"  
+xcopy /Y "$(SolutionDir)$(Platform)\$(Configuration)\Uncensored3D.js"  "$(SolutionDir)Web"  
+ </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|x64'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|x64'">
+    <ClCompile>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <ExceptionHandling>false</ExceptionHandling>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\explo\Documents\uncensored3D\thirdparty\glfw-3.3.9\include;C:\Users\explo\Documents\uncensored3D\thirdparty\gles;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\explo\Documents\uncensored3D\thirdparty\glfw-3.3.9\lib-vc2022;C:\Users\explo\Documents\uncensored3D\thirdparty\gles\GLES3\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3_mt.lib;libEGL.lib;libGLESv2.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Emscripten'">
+    <Link>
+      <AdditionalOptions>-sINITIAL_MEMORY=134217728 -sMAX_WEBGL_VERSION=2   -sUSE_GLFW=3  -sFULL_ES3 -sEXIT_RUNTIME  -sASYNCIFY  -lembind   -sEXPORTED_RUNTIME_METHODS=["UTF8ToString","stringToNewUTF8"]  -sEXPORTED_FUNCTIONS=["_main","_malloc","_free","_malloc"] %(AdditionalOptions)</AdditionalOptions>
+      <LinkerOptimizationLevel>O3</LinkerOptimizationLevel>
+      <EnableMemoryGrowth>true</EnableMemoryGrowth>
+      <RunJavaScriptOptimization>JavaScriptOptimization</RunJavaScriptOptimization>
+      <RunLLVMOptimization>LLVMOptimizationLevel3</RunLLVMOptimization>
+      <RunLLVMLinkTimeOptimization>LLVMLTOLevel3</RunLLVMLinkTimeOptimization>
+    </Link>
+    <ClCompile>
+      <OptimizationLevel>O3</OptimizationLevel>
+      <ExceptionHandling>false</ExceptionHandling>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>gnuc11</LanguageStandard>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(SolutionDir)$(Platform)\$(Configuration)\Uncensored3D.wasm"  "$(SolutionDir)Web"  
+xcopy /Y "$(SolutionDir)$(Platform)\$(Configuration)\Uncensored3D.js"  "$(SolutionDir)Web"  </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{c4e55df7-4357-4589-9cc7-72c2a71c69cc}</ProjectGuid>
+    <RootNamespace>Uncensored3D</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|Emscripten'" Label="Configuration">
+    <ConfigurationType>HTMLPage</ConfigurationType>
+    <PlatformToolset>emcc</PlatformToolset>
+    <EmscriptenDir>$(EMSDK)\upstream\emscripten\</EmscriptenDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Emscripten'" Label="Configuration">
+    <ConfigurationType>HTMLPage</ConfigurationType>
+    <PlatformToolset>emcc</PlatformToolset>
+    <EmscriptenDir>$(EMSDK)\upstream\emscripten\</EmscriptenDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Emscripten'">
+    <ConfigurationType>HTMLPage</ConfigurationType>
+    <PlatformToolset>emcc</PlatformToolset>
+    <EmscriptenDir>$(EMSDK)\upstream\emscripten\</EmscriptenDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugEmscr|x64'" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

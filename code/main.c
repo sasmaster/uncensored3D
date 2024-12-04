@@ -33,6 +33,7 @@
 #include "glsl.h"
 #include "path.h"
 
+//#define U_BENCHMARK
 GLFWwindow* window = NULL;
 #define WIN_W 1280
 #define WIN_H 720
@@ -80,7 +81,9 @@ EM_PORT_API(void) register_gl_tex_handle(unsigned int handle, int w, int h, int 
 	texFromJs.w = w;
 	texFromJs.h = h;
 	texFromJs.num_channels = num_channels;
+#ifdef _DEBUG
 	printf("Registered JS created Texture with Handle id:%i\n", handle);
+#endif
 }
 
 #else
@@ -198,7 +201,7 @@ void render()
 
 		//scale
 		mat4x4_identity(modelMatrix);
-	 
+
 		if (texFromJs.handle)
 		{
 			vec3  scale = { (float)texFromJs.w, (float)texFromJs.h, 1.0f };
@@ -214,10 +217,10 @@ void render()
 
 
 		//rotation
-		 mat4x4_rotate(rotMatrix, modelMatrix, 0, 1.0f, 0.0f, LIN_TO_RADIANS(angle));
-		 //angle += 2.44f;
+		mat4x4_rotate(rotMatrix, modelMatrix, 0, 1.0f, 0.0f, LIN_TO_RADIANS(angle));
+		//angle += 2.44f;
 
-		//translation
+	   //translation
 		mat4x4_translate(modelMatrix, 0.0f, 0.0f, -1800.0f);
 
 		//T * R * S  -> P
@@ -251,15 +254,18 @@ void render()
 
 
 #ifdef U_BENCHMARK
-	double frame_time = static_cast<double>(get_time_in_milliseconds()) - t_start;
+	double frame_time = (double)(get_time_in_milliseconds()) - t_start;
+#ifdef __EMSCRIPTEN__
 	printf("Frame time:%f\n", frame_time);
+#else
 	char time_str[20];
 	snprintf(time_str, 19, "Frame time: %.2f", frame_time);
 	glfwSetWindowTitle(window, time_str);
-#endif
+#endif//__EMSCRIPTEN__
+#endif//U_BENCHMARK
 
 
 
 
 
-	}
+}
